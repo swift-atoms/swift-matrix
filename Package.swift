@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-matrix-primitives",
+    name: "swift-matrix",
     platforms: [
         .macOS(.v27),
         .iOS(.v27),
@@ -13,42 +13,42 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "Matrix Primitives",
-            targets: ["Matrix Primitives"]
+            name: "Matrix",
+            targets: ["Matrix"]
         )
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-primitives/swift-linear-primitives.git",
+            url: "https://github.com/swift-molecules/swift-linear.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-vector-primitives.git",
+            url: "https://github.com/swift-molecules/swift-vector.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-dimension-primitives.git",
+            url: "https://github.com/swift-molecules/swift-dimension.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-index-primitives.git",
+            url: "https://github.com/swift-molecules/swift-index.git",
             branch: "main"
         ),
     ],
     targets: [
         .target(
-            name: "Matrix Primitives",
+            name: "Matrix",
             dependencies: [
-                .product(name: "Linear Primitives", package: "swift-linear-primitives"),
-                .product(name: "Vector Primitives", package: "swift-vector-primitives"),
-                .product(name: "Dimension Primitives", package: "swift-dimension-primitives"),
-                .product(name: "Index Primitives", package: "swift-index-primitives"),
+                .product(name: "Linear", package: "swift-linear"),
+                .product(name: "Vector", package: "swift-vector"),
+                .product(name: "Dimension", package: "swift-dimension"),
+                .product(name: "Index", package: "swift-index"),
             ]
         ),
         .testTarget(
-            name: "Matrix Primitives Tests",
+            name: "Matrix Tests",
             dependencies: [
-                "Matrix Primitives"
+                "Matrix"
             ]
         ),
     ],

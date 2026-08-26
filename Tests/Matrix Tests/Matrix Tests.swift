@@ -1,6 +1,6 @@
 import Testing
 
-@testable import Matrix_Primitives
+@testable import Matrix
 
 extension Matrix {
     @Suite struct Tests {
