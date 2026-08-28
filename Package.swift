@@ -15,37 +15,41 @@ let package = Package(
         .library(
             name: "Matrix",
             targets: ["Matrix"]
+        )
+    ],
+    dependencies: [
+        .package(
+            url: "https://github.com/swift-molecules/swift-linear.git",
+            branch: "main"
         ),
-        .library(
-            name: "Matrix Standard Library Integration",
-            targets: ["Matrix Standard Library Integration"]
+        .package(
+            url: "https://github.com/swift-molecules/swift-vector.git",
+            branch: "main"
         ),
-        .library(
-            name: "Matrix Apple Foundation Integration",
-            targets: ["Matrix Apple Foundation Integration"]
+        .package(
+            url: "https://github.com/swift-molecules/swift-dimension.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-molecules/swift-index.git",
+            branch: "main"
         ),
     ],
-    dependencies: [],
     targets: [
         .target(
             name: "Matrix",
-            dependencies: []
-        ),
-        .target(
-            name: "Matrix Standard Library Integration",
-            dependencies: ["Matrix"]
-        ),
-        .target(
-            name: "Matrix Apple Foundation Integration",
             dependencies: [
-                "Matrix",
-                "Matrix Standard Library Integration",
+                .product(name: "Linear", package: "swift-linear"),
+                .product(name: "Vector", package: "swift-vector"),
+                .product(name: "Dimension", package: "swift-dimension"),
+                .product(name: "Index", package: "swift-index"),
             ]
         ),
         .testTarget(
             name: "Matrix Tests",
-            dependencies: ["Matrix"],
-            path: "Tests/Matrix Tests"
+            dependencies: [
+                "Matrix"
+            ]
         ),
     ],
     swiftLanguageModes: [.v6]
