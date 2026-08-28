@@ -19,19 +19,19 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-molecules/swift-linear.git",
+            url: "https://github.com/swift-atoms/swift-linear.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-vector.git",
+            url: "https://github.com/swift-atoms/swift-vector.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-dimension.git",
+            url: "https://github.com/swift-atoms/swift-dimension.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-index.git",
+            url: "https://github.com/swift-atoms/swift-index.git",
             branch: "main"
         ),
     ],
@@ -48,7 +48,7 @@ let package = Package(
         .testTarget(
             name: "Matrix Tests",
             dependencies: [
-                "Matrix"
+                .target(name: "Matrix")
             ]
         ),
     ],
