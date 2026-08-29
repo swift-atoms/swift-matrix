@@ -27,10 +27,6 @@ let package = Package(
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-atoms/swift-dimension.git",
-            branch: "main"
-        ),
-        .package(
             url: "https://github.com/swift-atoms/swift-index.git",
             branch: "main"
         ),
@@ -41,7 +37,6 @@ let package = Package(
             dependencies: [
                 .product(name: "Linear", package: "swift-linear"),
                 .product(name: "Vector", package: "swift-vector"),
-                .product(name: "Dimension", package: "swift-dimension"),
                 .product(name: "Index", package: "swift-index"),
             ]
         ),
