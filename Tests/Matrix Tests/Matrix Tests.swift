@@ -1,7 +1,7 @@
 import Matrix
 import Testing
 
-@Suite struct `Matrices obey mathematical laws` {
+@Suite struct `Matrix products preserve shape and scalar evaluation order` {
     @Test func `Matrix reductions preserve scalar rounding order`() {
         let values = Matrix<1, 3, Double>(rows: [[1e16, 1, -1e16]])
         let factors = Matrix<3, 1, Double>(repeating: 1)
