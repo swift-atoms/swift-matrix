@@ -1,7 +1,5 @@
 public import Vector
 
-/// A rectangular matrix. Row and column dimensions are part of its type.
-/// Multiplication requires matching inner dimensions at compile time.
 public struct Matrix<let Rows: Int, let Columns: Int, Scalar> {
     public var rows: InlineArray<Rows, InlineArray<Columns, Scalar>>
 
