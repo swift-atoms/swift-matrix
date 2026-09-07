@@ -25,34 +25,7 @@ public struct Matrix<let Rows: Int, let Columns: Int, Scalar> {
     }
 }
 
-extension Matrix: Sendable where Scalar: Sendable {}
-
-extension Matrix: Equatable where Scalar: Equatable {
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        for row in 0..<Rows {
-            for column in 0..<Columns where lhs[row, column] != rhs[row, column] { return false }
-        }
-        return true
-    }
-}
-
-extension Matrix: Hashable where Scalar: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        for row in 0..<Rows {
-            for column in 0..<Columns { hasher.combine(self[row, column]) }
-        }
-    }
-}
-
-extension Matrix: AdditiveArithmetic where Scalar: AdditiveArithmetic {
-    public static var zero: Self { Self(repeating: .zero) }
-    public static func + (lhs: Self, rhs: Self) -> Self {
-        Self(rows: InlineArray { row in InlineArray { column in lhs[row, column] + rhs[row, column] } })
-    }
-    public static func - (lhs: Self, rhs: Self) -> Self {
-        Self(rows: InlineArray { row in InlineArray { column in lhs[row, column] - rhs[row, column] } })
-    }
-}
+extension Matrix: Swift.Sendable where Scalar: Swift.Sendable {}
 
 extension Matrix where Scalar: Numeric {
     public func applied(to vector: Vector<Columns, Scalar>) -> Vector<Rows, Scalar> {
