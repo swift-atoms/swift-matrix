@@ -12,10 +12,10 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
-        .library(
-            name: "Matrix",
-            targets: ["Matrix"]
-        )
+        .library(name: "Matrix", targets: ["Matrix"]),
+        .library(name: "Matrix Standard Library Integration", targets: ["Matrix Standard Library Integration"]),
+        .library(name: "Matrix Foundation Library Integration", targets: ["Matrix Foundation Library Integration"]),
+        .library(name: "Matrix Test Support", targets: ["Matrix Test Support"]),
     ],
     dependencies: [
         .package(
@@ -38,20 +38,47 @@ let package = Package(
                 .product(name: "Linear", package: "swift-linear"),
                 .product(name: "Vector", package: "swift-vector"),
                 .product(name: "Index", package: "swift-index"),
-            ]
+            ],
+            path: "Sources/Matrix"
+        ),
+        .target(
+            name: "Matrix Standard Library Integration",
+            dependencies: [
+                .target(name: "Matrix"),
+            ],
+            path: "Sources/Matrix Standard Library Integration"
+        ),
+        .target(
+            name: "Matrix Foundation Library Integration",
+            dependencies: [
+                .target(name: "Matrix"),
+                .target(name: "Matrix Standard Library Integration"),
+            ],
+            path: "Sources/Matrix Foundation Library Integration"
+        ),
+        .target(
+            name: "Matrix Test Support",
+            dependencies: [
+                .target(name: "Matrix"),
+            ],
+            path: "Tests/Support"
         ),
         .testTarget(
             name: "Matrix Tests",
             dependencies: [
-                .target(name: "Matrix")
-            ]
+                .target(name: "Matrix"),
+                .target(name: "Matrix Test Support"),
+                .target(name: "Matrix Standard Library Integration"),
+                .target(name: "Matrix Foundation Library Integration"),
+            ],
+            path: "Tests/Matrix Tests"
         ),
     ],
     swiftLanguageModes: [.v6]
 )
 
-for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    let ecosystem: [SwiftSetting] = [
+for target in package.targets {
+    target.swiftSettings = [
         .strictMemorySafety(),
         .enableUpcomingFeature("ExistentialAny"),
         .enableUpcomingFeature("InternalImportsByDefault"),
@@ -60,8 +87,4 @@ for target in package.targets where ![.system, .binary, .plugin, .macro].contain
         .enableExperimentalFeature("Lifetimes"),
         .enableUpcomingFeature("InferIsolatedConformances"),
     ]
-
-    let package: [SwiftSetting] = []
-
-    target.swiftSettings = (target.swiftSettings ?? []) + ecosystem + package
 }
