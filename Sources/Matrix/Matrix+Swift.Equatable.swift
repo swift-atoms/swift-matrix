@@ -1,4 +1,4 @@
-public import Vector
+import Vector
 
 extension Matrix: Swift.Equatable where Scalar: Swift.Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {

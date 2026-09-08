@@ -1,4 +1,4 @@
-public import Vector
+import Vector
 
 extension Matrix: Swift.AdditiveArithmetic where Scalar: Swift.AdditiveArithmetic {
     public static var zero: Self { Self(repeating: .zero) }

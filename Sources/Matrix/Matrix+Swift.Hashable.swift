@@ -1,4 +1,4 @@
-public import Vector
+import Vector
 
 extension Matrix: Swift.Hashable where Scalar: Swift.Hashable {
     public func hash(into hasher: inout Hasher) {
