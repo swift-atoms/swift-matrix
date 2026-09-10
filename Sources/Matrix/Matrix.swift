@@ -7,10 +7,6 @@ public struct Matrix<let Rows: Int, let Columns: Int, Scalar> {
         self.rows = rows
     }
 
-    public init(repeating value: Scalar) {
-        self.rows = InlineArray(repeating: InlineArray(repeating: value))
-    }
-
     public subscript(row: Int, column: Int) -> Scalar {
         get { rows[row][column] }
         set { rows[row][column] = newValue }
@@ -44,5 +40,11 @@ extension Matrix where Scalar: Numeric {
                 return result
             }
         })
+    }
+}
+
+extension Matrix {
+    public init(repeating value: Scalar) {
+        self.init(rows: InlineArray(repeating: InlineArray(repeating: value)))
     }
 }
