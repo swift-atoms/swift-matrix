@@ -9,13 +9,28 @@ let package = Package(
         .library(name: "Matrix Foundation Integration", targets: ["Matrix Foundation Integration"]),
         .library(name: "Matrix Test Support", targets: ["Matrix Test Support"]),
     ],
+    traits: [
+        .trait(name: "Rotation", description: "Rotation integration", enabledTraits: ["Trigonometry"]),
+        .trait(name: "Scale", description: "Scale integration"),
+        .trait(name: "Shear", description: "Shear integration"),
+        .trait(name: "Trigonometry", description: "Circular trigonometry for rotation matrices"),
+    ],
     dependencies: [
+        .package(url: "https://github.com/swift-atoms/swift-rotation.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-trigonometry.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-scale.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-shear.git", branch: "main"),
         .package(url: "https://github.com/swift-atoms/swift-vector.git", branch: "main"),
     ],
     targets: [
         .target(
             name: "Matrix",
             dependencies: [
+                .product(name: "Rotation", package: "swift-rotation", condition: .when(traits: ["Rotation"])),
+                .product(name: "Trigonometry", package: "swift-trigonometry", condition: .when(traits: ["Trigonometry"])),
+                .product(name: "Scale", package: "swift-scale", condition: .when(traits: ["Scale"])),
+                .product(name: "Shear", package: "swift-shear", condition: .when(traits: ["Shear"])),
+
                 .product(
                     name: "Vector",
                     package: "swift-vector"
@@ -55,6 +70,31 @@ let package = Package(
                 ),
             ],
             path: "Tests/Matrix Tests"
+        ),
+        .testTarget(
+            name: "Matrix Rotation Tests",
+            dependencies: [
+                .target(name: "Matrix"),
+                .product(name: "Rotation", package: "swift-rotation", condition: .when(traits: ["Rotation"])),
+                .product(name: "Trigonometry", package: "swift-trigonometry", condition: .when(traits: ["Trigonometry"])),
+            ],
+            path: "Tests/Matrix Rotation Tests"
+        ),
+        .testTarget(
+            name: "Matrix Scale Tests",
+            dependencies: [
+                .target(name: "Matrix"),
+                .product(name: "Scale", package: "swift-scale", condition: .when(traits: ["Scale"])),
+            ],
+            path: "Tests/Matrix Scale Tests"
+        ),
+        .testTarget(
+            name: "Matrix Shear Tests",
+            dependencies: [
+                .target(name: "Matrix"),
+                .product(name: "Shear", package: "swift-shear", condition: .when(traits: ["Shear"])),
+            ],
+            path: "Tests/Matrix Shear Tests"
         ),
     ],
     swiftLanguageModes: [.v6]
