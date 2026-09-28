@@ -27,7 +27,7 @@ let package = Package(
             name: "Matrix",
             dependencies: [
                 .product(name: "Rotation", package: "swift-rotation", condition: .when(traits: ["Rotation"])),
-                .product(name: "Trigonometry", package: "swift-trigonometry", condition: .when(traits: ["Trigonometry"])),
+                .product(name: "Trigonometry", package: "swift-trigonometry", condition: .when(traits: ["Trigonometry", "Rotation"])),
                 .product(name: "Scale", package: "swift-scale", condition: .when(traits: ["Scale"])),
                 .product(name: "Shear", package: "swift-shear", condition: .when(traits: ["Shear"])),
 
@@ -76,7 +76,7 @@ let package = Package(
             dependencies: [
                 .target(name: "Matrix"),
                 .product(name: "Rotation", package: "swift-rotation", condition: .when(traits: ["Rotation"])),
-                .product(name: "Trigonometry", package: "swift-trigonometry", condition: .when(traits: ["Trigonometry"])),
+                .product(name: "Trigonometry", package: "swift-trigonometry", condition: .when(traits: ["Trigonometry", "Rotation"])),
             ],
             path: "Tests/Matrix Rotation Tests"
         ),
