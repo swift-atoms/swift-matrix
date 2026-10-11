@@ -19,7 +19,7 @@ public struct Matrix<let Rows: Int, let Columns: Int, Scalar> {
     }
 }
 
-extension Matrix: Swift.Sendable where Scalar: Swift.Sendable {}
+extension Matrix: Swift::Sendable where Scalar: Swift::Sendable {}
 
 extension Matrix where Scalar: Numeric {
     public func applied(to vector: Vector<Columns, Scalar>) -> Vector<Rows, Scalar> {
