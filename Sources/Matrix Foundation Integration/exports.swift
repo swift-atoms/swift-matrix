@@ -1,2 +1,2 @@
-@_exported public import Matrix
 import Foundation
+@_exported public import Matrix
