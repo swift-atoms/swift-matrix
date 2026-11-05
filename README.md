@@ -4,7 +4,7 @@ Use this package when you need a fixed-size, stack-stored `Rows × Columns` grid
 
 ## Laws
 
-- Storage is row-major: `rows[row][column]` is the entry `self[row, column]`, and `multiplied(by:)` and `applied(to:)` treat vectors as columns. `a.multiplied(by: b)` is the product `a · b`, so `a.multiplied(by: b).applied(to: v) == a.applied(to: b.applied(to: v))`.
+- Storage is row-major: `rows[row][column]` is the entry `self[row, column]`, and `multiplied(by:)` and `applied(to:)` treat vectors as columns. `a.multiplied(by: b)` is the product `a · b`, so `a.multiplied(by: b).applied(to: v) == a.applied(to: b.applied(to: v))` in exact arithmetic. With floating-point scalars the two sides can differ by rounding.
 - Every product entry starts at `.zero` and accumulates the terms in increasing inner index, one addition at a time. Floating-point results therefore match that left-to-right sum exactly, including its rounding.
 - A product over a zero inner dimension is the zero matrix, and a product with a zero outer dimension keeps its shape. `transposed` applied twice returns the original matrix.
 - Equality and hashing are entry by entry, and all matrices with no entries are equal.
