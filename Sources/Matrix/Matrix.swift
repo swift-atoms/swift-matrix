@@ -6,19 +6,6 @@ public struct Matrix<let Rows: Int, let Columns: Int, Scalar> {
     public init(rows: consuming InlineArray<Rows, InlineArray<Columns, Scalar>>) {
         self.rows = rows
     }
-
-    public subscript(row: Int, column: Int) -> Scalar {
-        get { rows[row][column] }
-        set { rows[row][column] = newValue }
-    }
-
-    public var transposed: Matrix<Columns, Rows, Scalar> {
-        Matrix<Columns, Rows, Scalar>(
-            rows: InlineArray { column in
-                InlineArray { row in self[row, column] }
-            }
-        )
-    }
 }
 
 extension Matrix: Swift::Sendable where Scalar: Swift::Sendable {}
@@ -52,5 +39,21 @@ extension Matrix where Scalar: Numeric {
 extension Matrix {
     public init(repeating value: Scalar) {
         self.init(rows: InlineArray(repeating: InlineArray(repeating: value)))
+    }
+}
+
+extension Matrix {
+
+    public subscript(row: Int, column: Int) -> Scalar {
+        get { rows[row][column] }
+        set { rows[row][column] = newValue }
+    }
+
+    public var transposed: Matrix<Columns, Rows, Scalar> {
+        Matrix<Columns, Rows, Scalar>(
+            rows: InlineArray { column in
+                InlineArray { row in self[row, column] }
+            }
+        )
     }
 }
