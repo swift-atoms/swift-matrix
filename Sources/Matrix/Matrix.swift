@@ -57,3 +57,30 @@ extension Matrix {
         )
     }
 }
+
+extension Matrix: Swift::AdditiveArithmetic where Scalar: Swift::AdditiveArithmetic {
+    public static var zero: Self { Self(repeating: .zero) }
+    public static func + (lhs: Self, rhs: Self) -> Self {
+        Self(rows: InlineArray { row in InlineArray { column in lhs[row, column] + rhs[row, column] } })
+    }
+    public static func - (lhs: Self, rhs: Self) -> Self {
+        Self(rows: InlineArray { row in InlineArray { column in lhs[row, column] - rhs[row, column] } })
+    }
+}
+
+extension Matrix: Swift::Equatable where Scalar: Swift::Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        for row in 0..<Rows {
+            for column in 0..<Columns where lhs[row, column] != rhs[row, column] { return false }
+        }
+        return true
+    }
+}
+
+extension Matrix: Swift::Hashable where Scalar: Swift::Hashable {
+    public func hash(into hasher: inout Hasher) {
+        (0..<Rows).forEach { row in
+            for column in 0..<Columns { hasher.combine(self[row, column]) }
+        }
+    }
+}
