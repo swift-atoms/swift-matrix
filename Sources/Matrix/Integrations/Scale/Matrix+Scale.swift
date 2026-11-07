@@ -5,7 +5,7 @@
 
         public init(_ scale: Scale<Rows, Scalar>) {
             self.init(repeating: .zero)
-            for index in 0..<Rows { self[index, index] = scale[index] }
+            (0..<Rows).forEach { index in self[index, index] = scale[index] }
         }
     }
 

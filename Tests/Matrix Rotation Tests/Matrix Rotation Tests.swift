@@ -19,7 +19,7 @@
             #expect(empty == Matrix<0, 0, Double>(repeating: 0))
             #expect(Matrix(Rotation<1, Double>.identity)[0, 0] == 1)
             let identity = Matrix(Rotation<3, Double>.identity)
-            for row in 0..<3 {
+            (0..<3).forEach { row in
                 for column in 0..<3 { #expect(identity[row, column] == (row == column ? 1 : 0)) }
             }
         }
@@ -47,7 +47,7 @@
             #expect(abs(forward[1]) < 1e-12)
             let expected = Matrix(yz).multiplied(by: Matrix(xy))
             let actual = Matrix(xy.followed(by: yz))
-            for row in 0..<3 {
+            (0..<3).forEach { row in
                 for column in 0..<3 { #expect(abs(expected[row, column] - actual[row, column]) < 1e-12) }
             }
         }
@@ -59,9 +59,9 @@
             let matrix = Matrix(rotation)
             let vector = Vector<4, Double>([2, -3, 4, 5])
             let restored = Matrix(rotation.inverse).applied(to: matrix.applied(to: vector))
-            for index in 0..<4 { #expect(abs(restored[index] - vector[index]) < 1e-12) }
+            (0..<4).forEach { index in #expect(abs(restored[index] - vector[index]) < 1e-12) }
             let product = matrix.transposed.multiplied(by: matrix)
-            for row in 0..<4 {
+            (0..<4).forEach { row in
                 for column in 0..<4 { #expect(abs(product[row, column] - (row == column ? 1 : 0)) < 1e-12) }
             }
         }

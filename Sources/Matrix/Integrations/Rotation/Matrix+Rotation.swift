@@ -6,14 +6,14 @@
 
         public init(_ rotation: Rotation<Rows, Scalar>) {
             self.init(repeating: 0)
-            for index in 0..<Rows { self[index, index] = 1 }
+            (0..<Rows).forEach { index in self[index, index] = 1 }
             for plane in rotation.planes {
                 let first = plane.first.underlying
                 let second = plane.second.underlying
                 let sine = Scalar.sin(plane.angle.underlying)
                 let cosine = Scalar.cos(plane.angle.underlying)
 
-                for column in 0..<Columns {
+                (0..<Columns).forEach { column in
                     let a = self[first, column]
                     let b = self[second, column]
                     self[first, column] = cosine * a - sine * b

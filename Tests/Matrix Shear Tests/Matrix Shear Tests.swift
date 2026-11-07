@@ -6,7 +6,7 @@
         @Test func `Conversion preserves identity entries and the selected factor`() throws {
             let shear = try Shear<3, Double>(target: .primary, source: .tertiary, factor: Scale(2))
             let matrix = Matrix(shear)
-            for row in 0..<3 {
+            (0..<3).forEach { row in
                 for column in 0..<3 {
                     let expected = row == column ? 1.0 : (row == 0 && column == 2 ? 2.0 : 0.0)
                     #expect(matrix[row, column] == expected)
@@ -30,7 +30,7 @@
                 for source in 0..<4 where source != target {
                     let shear = try Shear<4, Double>(target: Axis(target), source: Axis(source), factor: Scale(factor))
                     let matrix = Matrix(shear)
-                    for basis in 0..<4 {
+                    (0..<4).forEach { basis in
                         let unit = Vector<4, Double>(InlineArray { $0 == basis ? 1 : 0 })
                         let moved = matrix.applied(to: unit)
                         for coordinate in 0..<4 {

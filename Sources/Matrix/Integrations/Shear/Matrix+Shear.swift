@@ -5,7 +5,7 @@
 
         public init(_ shear: Shear<Rows, Scalar>) {
             self.init(repeating: 0)
-            for index in 0..<Rows { self[index, index] = 1 }
+            (0..<Rows).forEach { index in self[index, index] = 1 }
             self[shear.target.underlying, shear.source.underlying] = shear.factor.value
         }
     }
