@@ -10,7 +10,7 @@ extension `Matrix Shear Tests` {
                 let shear = try Shear<3, Double>(target: .primary, source: .tertiary, factor: Scale(2))
                 let matrix = Matrix(shear)
                 (0..<3).forEach { row in
-                    for column in 0..<3 {
+                    (0..<3).forEach { column in
                         let expected = row == column ? 1.0 : (row == 0 && column == 2 ? 2.0 : 0.0)
                         #expect(matrix[row, column] == expected)
                     }
@@ -38,7 +38,7 @@ extension `Matrix Shear Tests` {
                         (0..<4).forEach { basis in
                             let unit = Vector<4, Double>(InlineArray { $0 == basis ? 1 : 0 })
                             let moved = matrix.applied(to: unit)
-                            for coordinate in 0..<4 {
+                            (0..<4).forEach { coordinate in
                                 let expected = coordinate == basis ? 1.0 : (basis == source && coordinate == target ? factor : 0.0)
                                 #expect(moved[coordinate] == expected)
                             }

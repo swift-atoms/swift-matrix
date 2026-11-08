@@ -15,7 +15,7 @@ extension Matrix where Scalar: Numeric {
         Vector<Rows, Scalar>(
             InlineArray { row in
                 var result: Scalar = .zero
-                for column in 0..<Columns { result += self[row, column] * vector[column] }
+                (0..<Columns).forEach { column in result += self[row, column] * vector[column] }
                 return result
             }
         )
@@ -28,7 +28,7 @@ extension Matrix where Scalar: Numeric {
             rows: InlineArray { row in
                 InlineArray { column in
                     var result: Scalar = .zero
-                    for inner in 0..<Columns { result += self[row, inner] * other[inner, column] }
+                    (0..<Columns).forEach { inner in result += self[row, inner] * other[inner, column] }
                     return result
                 }
             }
@@ -80,7 +80,7 @@ extension Matrix: Swift::Equatable where Scalar: Swift::Equatable {
 extension Matrix: Swift::Hashable where Scalar: Swift::Hashable {
     public func hash(into hasher: inout Hasher) {
         (0..<Rows).forEach { row in
-            for column in 0..<Columns { hasher.combine(self[row, column]) }
+            (0..<Columns).forEach { column in hasher.combine(self[row, column]) }
         }
     }
 }

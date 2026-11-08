@@ -23,7 +23,7 @@ extension `Matrix Rotation Tests` {
                 #expect(Matrix(Rotation<1, Double>.identity)[0, 0] == 1)
                 let identity = Matrix(Rotation<3, Double>.identity)
                 (0..<3).forEach { row in
-                    for column in 0..<3 { #expect(identity[row, column] == (row == column ? 1 : 0)) }
+                    (0..<3).forEach { column in #expect(identity[row, column] == (row == column ? 1 : 0)) }
                 }
             }
 
@@ -51,7 +51,7 @@ extension `Matrix Rotation Tests` {
                 let expected = Matrix(yz).multiplied(by: Matrix(xy))
                 let actual = Matrix(xy.followed(by: yz))
                 (0..<3).forEach { row in
-                    for column in 0..<3 { #expect(abs(expected[row, column] - actual[row, column]) < 1e-12) }
+                    (0..<3).forEach { column in #expect(abs(expected[row, column] - actual[row, column]) < 1e-12) }
                 }
             }
 
@@ -65,7 +65,7 @@ extension `Matrix Rotation Tests` {
                 (0..<4).forEach { index in #expect(abs(restored[index] - vector[index]) < 1e-12) }
                 let product = matrix.transposed.multiplied(by: matrix)
                 (0..<4).forEach { row in
-                    for column in 0..<4 { #expect(abs(product[row, column] - (row == column ? 1 : 0)) < 1e-12) }
+                    (0..<4).forEach { column in #expect(abs(product[row, column] - (row == column ? 1 : 0)) < 1e-12) }
                 }
             }
 

@@ -11,7 +11,7 @@ extension `Matrix Scale Tests` {
                 let matrix = Matrix(scale)
                 #expect(matrix.applied(to: Vector(x: 4, y: 5, z: 6)) == Vector(x: 8, y: -15, z: 0))
                 (0..<3).forEach { row in
-                    for column in 0..<3 { #expect(matrix[row, column] == (row == column ? scale[row] : 0)) }
+                    (0..<3).forEach { column in #expect(matrix[row, column] == (row == column ? scale[row] : 0)) }
                 }
                 #expect(scale.matrix == matrix)
             }
