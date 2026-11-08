@@ -2,9 +2,9 @@
     import Matrix
     import Testing
 
-enum `Matrix Scale Tests` {}
+    enum `Matrix Scale Tests` {}
 
-extension `Matrix Scale Tests` {
+    extension `Matrix Scale Tests` {
         @Suite struct `Scale matrix representation` {
             @Test func `Integer factors form a diagonal matrix and scale each coordinate`() {
                 let scale = Scale<3, Int>(x: 2, y: -3, z: 0)
@@ -46,5 +46,5 @@ extension `Matrix Scale Tests` {
                 #expect(scale.matrix[0, 0] == 9)
             }
         }
-}
+    }
 #endif

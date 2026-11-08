@@ -13,9 +13,9 @@
         public static func atan2(_ y: Double, _ x: Double) -> Double { Foundation.atan2(y, x) }
     }
 
-enum `Matrix Rotation Tests` {}
+    enum `Matrix Rotation Tests` {}
 
-extension `Matrix Rotation Tests` {
+    extension `Matrix Rotation Tests` {
         @Suite struct `Rotation matrix evaluation` {
             @Test func `Empty rotations produce identity including zero and one dimensions`() {
                 let empty = Matrix(Rotation<0, Double>.identity)
@@ -78,7 +78,7 @@ extension `Matrix Rotation Tests` {
                 #expect(rotation.planes.count == 1)
             }
         }
-}
+    }
 
     @Test func `Degree based legacy call sites convert through the angle owner before matrix evaluation`() throws {
         let angle = Radian(degrees: Degree<Double>(90))

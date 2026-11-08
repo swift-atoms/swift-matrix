@@ -2,9 +2,9 @@
     import Matrix
     import Testing
 
-enum `Matrix Shear Tests` {}
+    enum `Matrix Shear Tests` {}
 
-extension `Matrix Shear Tests` {
+    extension `Matrix Shear Tests` {
         @Suite struct `Shear matrix representation` {
             @Test func `Conversion preserves identity entries and the selected factor`() throws {
                 let shear = try Shear<3, Double>(target: .primary, source: .tertiary, factor: Scale(2))
@@ -25,9 +25,9 @@ extension `Matrix Shear Tests` {
                 #expect(product[0, 1] == 0 && product[1, 0] == 0)
             }
         }
-}
+    }
 
-extension `Matrix Shear Tests` {
+    extension `Matrix Shear Tests` {
         @Suite struct `Shear matrix boundaries` {
             @Test(arguments: [0.0, -2.0, 0.5, Double.greatestFiniteMagnitude])
             func `Every ordered axis pair maps the source basis to the target`(factor: Double) throws {
@@ -55,7 +55,7 @@ extension `Matrix Shear Tests` {
                 #expect(matrix[1, 0] == 9)
             }
         }
-}
+    }
 
     @Test func `Two different elementary shears compose as matrices and not by adding off diagonal factors`() throws {
         let horizontal = try Shear<2, Double>(target: .primary, source: .secondary, factor: Scale(2))
