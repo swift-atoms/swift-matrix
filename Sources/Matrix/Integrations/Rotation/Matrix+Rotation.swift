@@ -4,6 +4,7 @@
 
     extension Matrix where Rows == Columns, Scalar: BinaryFloatingPoint & Trigonometry.Circular {
 
+        @inlinable
         public init(_ rotation: Rotation<Rows, Scalar>) {
             self.init(repeating: 0)
             (0..<Rows).forEach { index in self[index, index] = 1 }
@@ -24,6 +25,7 @@
     }
 
     extension Rotation where Scalar: Trigonometry.Circular {
+        @inlinable
         public var matrix: Matrix<N, N, Scalar> { Matrix(self) }
     }
 #endif

@@ -3,6 +3,7 @@ public import Vector
 public struct Matrix<let Rows: Int, let Columns: Int, Scalar> {
     public var rows: InlineArray<Rows, InlineArray<Columns, Scalar>>
 
+    @inlinable
     public init(rows: consuming InlineArray<Rows, InlineArray<Columns, Scalar>>) {
         self.rows = rows
     }
@@ -11,6 +12,7 @@ public struct Matrix<let Rows: Int, let Columns: Int, Scalar> {
 extension Matrix: Swift::Sendable where Scalar: Swift::Sendable {}
 
 extension Matrix where Scalar: Numeric {
+    @inlinable
     public func applied(to vector: Vector<Columns, Scalar>) -> Vector<Rows, Scalar> {
         Vector<Rows, Scalar>(
             InlineArray { row in
@@ -21,6 +23,7 @@ extension Matrix where Scalar: Numeric {
         )
     }
 
+    @inlinable
     public func multiplied<let OtherColumns: Int>(
         by other: Matrix<Columns, OtherColumns, Scalar>
     ) -> Matrix<Rows, OtherColumns, Scalar> {
@@ -37,6 +40,7 @@ extension Matrix where Scalar: Numeric {
 }
 
 extension Matrix {
+    @inlinable
     public init(repeating value: Scalar) {
         self.init(rows: InlineArray(repeating: InlineArray(repeating: value)))
     }
@@ -44,11 +48,13 @@ extension Matrix {
 
 extension Matrix {
 
+    @inlinable
     public subscript(row: Int, column: Int) -> Scalar {
         get { rows[row][column] }
         set { rows[row][column] = newValue }
     }
 
+    @inlinable
     public var transposed: Matrix<Columns, Rows, Scalar> {
         Matrix<Columns, Rows, Scalar>(
             rows: InlineArray { column in
@@ -59,16 +65,20 @@ extension Matrix {
 }
 
 extension Matrix: Swift::AdditiveArithmetic where Scalar: Swift::AdditiveArithmetic {
+    @inlinable
     public static var zero: Self { Self(repeating: .zero) }
+    @inlinable
     public static func + (lhs: Self, rhs: Self) -> Self {
         Self(rows: InlineArray { row in InlineArray { column in lhs[row, column] + rhs[row, column] } })
     }
+    @inlinable
     public static func - (lhs: Self, rhs: Self) -> Self {
         Self(rows: InlineArray { row in InlineArray { column in lhs[row, column] - rhs[row, column] } })
     }
 }
 
 extension Matrix: Swift::Equatable where Scalar: Swift::Equatable {
+    @inlinable
     public static func == (lhs: Self, rhs: Self) -> Bool {
         for row in 0..<Rows {
             for column in 0..<Columns where lhs[row, column] != rhs[row, column] { return false }
@@ -78,6 +88,7 @@ extension Matrix: Swift::Equatable where Scalar: Swift::Equatable {
 }
 
 extension Matrix: Swift::Hashable where Scalar: Swift::Hashable {
+    @inlinable
     public func hash(into hasher: inout Hasher) {
         (0..<Rows).forEach { row in
             (0..<Columns).forEach { column in hasher.combine(self[row, column]) }

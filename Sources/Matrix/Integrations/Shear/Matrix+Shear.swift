@@ -3,6 +3,7 @@
 
     extension Matrix where Rows == Columns, Scalar: BinaryFloatingPoint {
 
+        @inlinable
         public init(_ shear: Shear<Rows, Scalar>) {
             self.init(repeating: 0)
             (0..<Rows).forEach { index in self[index, index] = 1 }
@@ -12,6 +13,7 @@
 
     extension Shear {
 
+        @inlinable
         public var matrix: Matrix<N, N, Scalar> { Matrix(self) }
     }
 #endif
