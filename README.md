@@ -1,6 +1,6 @@
 # swift-matrix
 
-Use this package when you need a fixed-size, stack-stored `Rows × Columns` grid of scalars with the dimensions checked at compile time: matrix products, applying a matrix to a `Vector<Columns, Scalar>`, transposition, and the matrix form of a `Scale`, `Shear` or `Rotation`. Start from `Matrix<Rows, Columns, Scalar>`. It carries no coordinate space; when the matrix is a linear map between tagged spaces, use `Linear.Matrix` from swift-linear, which wraps this type.
+Use this package when you need a fixed-size, stack-stored `Rows × Columns` grid of scalars with the dimensions checked at compile time: matrix products, applying a matrix to a `Vector<Columns, Scalar>`, transposition, and the matrix form of a `Scale`, `Shear`, `Rotation` or `Projection`. Start from `Matrix<Rows, Columns, Scalar>`. It carries no coordinate space; when the matrix is a linear map between tagged spaces, use `Linear.Matrix` from swift-linear, which wraps this type.
 
 ## Laws
 
@@ -11,3 +11,4 @@ Use this package when you need a fixed-size, stack-stored `Rows × Columns` grid
 - `Matrix(scale)` is diagonal with the scale's factors on the diagonal and exact zeros elsewhere. Non-finite factors are copied unchanged. `Matrix(first.concatenating(second)) == Matrix(second).multiplied(by: Matrix(first))`.
 - `Matrix(shear)` is the identity plus the shear's factor at `[target, source]`. Composing two shears multiplies their matrices; it does not add their off-diagonal factors.
 - `Matrix(rotation)` starts from the identity and applies `rotation.planes` in order. Each plane rotates its `first` axis toward its `second` for a positive angle. `Matrix(a.followed(by: b))` equals `Matrix(b).multiplied(by: Matrix(a))` up to rounding, and the result is orthonormal up to rounding. The conversion forgets parameters: a full-turn rotation gives a matrix that is approximately the identity even though the rotation is not `.identity`.
+- `Matrix(projection)` is the 4 × 4 matrix whose rows are `projection.coefficients`, acting on homogeneous column vectors (x, y, z, 1). `Matrix(projection).applied(to:)` of such a vector equals `projection.clip(_:)` of the point exactly, because both sum each row from zero in column order. The last row is (0, 0, −1, 0) for a perspective projection and (0, 0, 0, 1) for an orthographic one. A projection composes with a view transform by an ordinary product: `Matrix(projection).multiplied(by: view)` projects what `view` has moved into eye space.
