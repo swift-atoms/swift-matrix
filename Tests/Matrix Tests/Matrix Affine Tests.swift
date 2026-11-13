@@ -128,3 +128,91 @@ extension `Matrix Tests` {
         }
     }
 }
+
+extension `Matrix Tests` {
+    @Suite struct `The affine map nearest to point correspondences is their least-squares fit` {
+        typealias Map = Matrix<2, 3, Double>
+        typealias Point = Vector<2, Double>
+
+        static let square: InlineArray<4, Point> = [Point([0, 0]), Point([1, 0]), Point([1, 1]), Point([0, 1])]
+        static let skew = Map(rows: [[3, 1.5, -2], [-0.5, 2, 7]])
+        static let quadrilateral: InlineArray<4, Point> = [Point([0.1, -0.2]), Point([2.3, 0.4]), Point([1.9, 1.6]), Point([-0.3, 1.1])]
+
+        static func near(_ a: Map, _ b: Map, within tolerance: Double = 1e-12) -> Bool {
+            (0..<2).allSatisfy { row in (0..<3).allSatisfy { column in abs(a[row, column] - b[row, column]) <= tolerance } }
+        }
+
+        static func residual(_ map: Map, _ sources: InlineArray<4, Point>, _ targets: InlineArray<4, Point>) -> Double {
+            sources.indices.reduce(0) { sum, index in
+                let miss = map.applied(to: sources[index]) - targets[index]
+                return sum + miss[0] * miss[0] + miss[1] * miss[1]
+            }
+        }
+
+        static func moved(_ points: InlineArray<4, Point>, by map: Map) -> InlineArray<4, Point> {
+            InlineArray { index in map.applied(to: points[index]) }
+        }
+
+        @Test func `A square onto a parallelogram fits exactly`() throws {
+            let corners = Self.moved(Self.square, by: Self.skew)
+            #expect(Self.near(try Map(fitting: Self.square, onto: corners), Self.skew))
+            let rectangle: InlineArray<4, Point> = [Point([2, 3]), Point([6, 3]), Point([6, 4]), Point([2, 4])]
+            #expect(Self.near(try Map(fitting: rectangle, onto: Self.moved(rectangle, by: Self.skew)), Self.skew))
+        }
+
+        @Test func `Three points not on a line fit exactly`() throws {
+            let sources: InlineArray<3, Point> = [Point([0, 0]), Point([4, 1]), Point([-1, 3])]
+            let targets: InlineArray<3, Point> = InlineArray { index in Self.skew.applied(to: sources[index]) }
+            #expect(Self.near(try Map(fitting: sources, onto: targets), Self.skew, within: 1e-11))
+        }
+
+        @Test func `No nearby map has a smaller sum of squared distances`() throws {
+            let fit = try Map(fitting: Self.square, onto: Self.quadrilateral)
+            let best = Self.residual(fit, Self.square, Self.quadrilateral)
+            #expect(best > 0)
+            (0..<2).forEach { row in
+                (0..<3).forEach { column in
+                    for step in [1e-3, -1e-3, 0.1, -0.1] {
+                        var nudged = fit
+                        nudged[row, column] += step
+                        #expect(Self.residual(nudged, Self.square, Self.quadrilateral) > best)
+                    }
+                }
+            }
+        }
+
+        @Test func `The misses sum to zero and are uncorrelated with the sources`() throws {
+            let fit = try Map(fitting: Self.square, onto: Self.quadrilateral)
+            var total: Point = .zero
+            var weighted = Matrix<2, 2, Double>.zero
+            Self.square.indices.forEach { index in
+                let miss = fit.applied(to: Self.square[index]) - Self.quadrilateral[index]
+                total = total + miss
+                (0..<2).forEach { row in
+                    (0..<2).forEach { column in weighted[row, column] += miss[row] * Self.square[index][column] }
+                }
+            }
+            #expect(abs(total[0]) < 1e-12 && abs(total[1]) < 1e-12)
+            (0..<2).forEach { row in (0..<2).forEach { column in #expect(abs(weighted[row, column]) < 1e-12) } }
+        }
+
+        @Test func `Translating the targets translates the fit, and translating the sources precedes it`() throws {
+            let fit = try Map(fitting: Self.square, onto: Self.quadrilateral)
+            let offset = Point([12.5, -40])
+            let shifted = Self.moved(Self.quadrilateral, by: .translation(offset))
+            #expect(Self.near(try Map(fitting: Self.square, onto: shifted), Map.translation(offset).multiplied(by: fit)))
+            let sources = Self.moved(Self.square, by: .translation(offset))
+            let back = Map.translation(Point([-12.5, 40]))
+            #expect(Self.near(try Map(fitting: sources, onto: Self.quadrilateral), fit.multiplied(by: back), within: 1e-11))
+        }
+
+        @Test func `Sources on one line, or none, are the singular failure`() {
+            let line: InlineArray<4, Point> = [Point([0, 0]), Point([1, 1]), Point([2, 2]), Point([3, 3])]
+            #expect(throws: Map.Error.singular) { try Map(fitting: line, onto: Self.quadrilateral) }
+            let coincident: InlineArray<4, Point> = [Point([1, 2]), Point([1, 2]), Point([1, 2]), Point([1, 2])]
+            #expect(throws: Map.Error.singular) { try Map(fitting: coincident, onto: Self.quadrilateral) }
+            let none: InlineArray<0, Point> = []
+            #expect(throws: Map.Error.singular) { try Map(fitting: none, onto: none) }
+        }
+    }
+}
