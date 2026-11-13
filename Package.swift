@@ -12,6 +12,7 @@ let package = Package(
     ],
     traits: [
         .trait(name: "Projection", description: "Projection integration"),
+        .trait(name: "Quaternion", description: "Quaternion integration"),
         .trait(name: "Rotation", description: "Rotation integration", enabledTraits: ["Trigonometry"]),
         .trait(name: "Scale", description: "Scale integration"),
         .trait(name: "Shear", description: "Shear integration"),
@@ -19,6 +20,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/swift-atoms/swift-projection.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-quaternion.git", branch: "main"),
         .package(url: "https://github.com/swift-atoms/swift-rotation.git", branch: "main"),
         .package(url: "https://github.com/swift-atoms/swift-trigonometry.git", branch: "main"),
         .package(url: "https://github.com/swift-atoms/swift-scale.git", branch: "main"),
@@ -30,6 +32,7 @@ let package = Package(
             name: "Matrix",
             dependencies: [
                 .product(name: "Projection", package: "swift-projection", condition: .when(traits: ["Projection"])),
+                .product(name: "Quaternion", package: "swift-quaternion", condition: .when(traits: ["Quaternion"])),
                 .product(name: "Rotation", package: "swift-rotation", condition: .when(traits: ["Rotation"])),
                 .product(name: "Trigonometry", package: "swift-trigonometry", condition: .when(traits: ["Trigonometry", "Rotation"])),
                 .product(name: "Scale", package: "swift-scale", condition: .when(traits: ["Scale"])),
@@ -81,6 +84,14 @@ let package = Package(
                 .product(name: "Trigonometry", package: "swift-trigonometry", condition: .when(traits: ["Trigonometry", "Rotation"])),
             ],
             path: "Tests/Matrix Rotation Tests"
+        ),
+        .testTarget(
+            name: "Matrix Quaternion Tests",
+            dependencies: [
+                .target(name: "Matrix"),
+                .product(name: "Quaternion", package: "swift-quaternion", condition: .when(traits: ["Quaternion"])),
+            ],
+            path: "Tests/Matrix Quaternion Tests"
         ),
         .testTarget(
             name: "Matrix Scale Tests",
