@@ -53,6 +53,31 @@ extension `Matrix Tests` {
             #expect(Map(linear: Self.stretch.linear, translation: Self.stretch.translation) == Self.stretch)
             #expect(Map(linear: Self.stretch.linear) == Map(rows: [[2, 3, 0], [0, -4, 0]]))
         }
+
+        @Test func `A linear map about a point keeps that point where it is`() {
+            let center = Vector<2, Int>([3, -2])
+            let map = Map(linear: Self.stretch.linear, about: center)
+            #expect(map.applied(to: center) == center)
+            #expect(map.linear == Self.stretch.linear)
+            let conjugated = Map.translation(center).multiplied(by: Map(linear: Self.stretch.linear))
+                .multiplied(by: Map.translation(Vector([-3, 2])))
+            #expect(map == conjugated)
+            #expect(Map(linear: Self.stretch.linear, about: .zero) == Map(linear: Self.stretch.linear))
+        }
+
+        @Test func `A scale about a point is the factor on the diagonal with the point kept`() {
+            #expect(Map.scale(Vector([2, 3])) == Map(rows: [[2, 0, 0], [0, 3, 0]]))
+            #expect(Map.scale(4) == Map(rows: [[4, 0, 0], [0, 4, 0]]))
+            #expect(Map.scale(Vector([2, 3]), about: Vector([5, 7])) == Map(rows: [[2, 0, -5], [0, 3, -14]]))
+            #expect(Map.scale(2, about: Vector([5, 7])).applied(to: Vector([5, 7])) == Vector([5, 7]))
+            #expect(Map.scale(2, about: Vector([5, 7])).applied(to: Vector([6, 9])) == Vector([7, 11]))
+        }
+
+        @Test func `A scale about a point gives the translation as the point less the factor times the point`() {
+            let (factor, x, y) = (1.37, 812.4, -33.9)
+            let map = Matrix<2, 3, Double>.scale(factor, about: Vector([x, y]))
+            #expect(map == Matrix<2, 3, Double>(rows: [[factor, 0, x - factor * x], [0, factor, y - factor * y]]))
+        }
     }
 }
 

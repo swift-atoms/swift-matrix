@@ -31,6 +31,22 @@ extension Matrix where Rows == 2, Columns == 3, Scalar: Numeric {
     }
 
     @inlinable
+    public init(linear: Matrix<2, 2, Scalar>, about center: Vector<2, Scalar>) {
+        let moved = linear.applied(to: center)
+        self.init(linear: linear, translation: Vector([center[0] - moved[0], center[1] - moved[1]]))
+    }
+
+    @inlinable
+    public static func scale(_ factors: Vector<2, Scalar>, about center: Vector<2, Scalar> = .zero) -> Self {
+        Self(linear: Matrix<2, 2, Scalar>(rows: [[factors[0], .zero], [.zero, factors[1]]]), about: center)
+    }
+
+    @inlinable
+    public static func scale(_ factor: Scalar, about center: Vector<2, Scalar> = .zero) -> Self {
+        scale(Vector([factor, factor]), about: center)
+    }
+
+    @inlinable
     public func applied(to point: Vector<2, Scalar>) -> Vector<2, Scalar> {
         Vector(
             InlineArray { row in
