@@ -187,7 +187,7 @@ extension `Matrix Tests` {
             var weighted = Matrix<2, 2, Double>.zero
             Self.square.indices.forEach { index in
                 let miss = fit.applied(to: Self.square[index]) - Self.quadrilateral[index]
-                total = total + miss
+                total += miss
                 (0..<2).forEach { row in
                     (0..<2).forEach { column in weighted[row, column] += miss[row] * Self.square[index][column] }
                 }

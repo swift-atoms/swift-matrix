@@ -32,8 +32,8 @@ extension Matrix where Rows == 2, Columns == 3, Scalar: FloatingPoint {
         var origin: Vector<2, Scalar> = .zero
         var image: Vector<2, Scalar> = .zero
         sources.indices.forEach { index in
-            origin = origin + sources[index]
-            image = image + targets[index]
+            origin += sources[index]
+            image += targets[index]
         }
         let count = Scalar(Count)
         origin = Vector([origin[0] / count, origin[1] / count])
