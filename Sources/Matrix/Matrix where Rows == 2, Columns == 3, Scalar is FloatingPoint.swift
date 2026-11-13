@@ -29,20 +29,20 @@ extension Matrix where Rows == 2, Columns == 3, Scalar: FloatingPoint {
         fitting sources: InlineArray<Count, Vector<2, Scalar>>,
         onto targets: InlineArray<Count, Vector<2, Scalar>>
     ) throws(Error) {
-        var sourceSum: Vector<2, Scalar> = .zero
-        var targetSum: Vector<2, Scalar> = .zero
+        var origin: Vector<2, Scalar> = .zero
+        var image: Vector<2, Scalar> = .zero
         sources.indices.forEach { index in
-            sourceSum = sourceSum + sources[index]
-            targetSum = targetSum + targets[index]
+            origin = origin + sources[index]
+            image = image + targets[index]
         }
         let count = Scalar(Count)
-        let sourceMean = Vector<2, Scalar>([sourceSum[0] / count, sourceSum[1] / count])
-        let targetMean = Vector<2, Scalar>([targetSum[0] / count, targetSum[1] / count])
+        origin = Vector([origin[0] / count, origin[1] / count])
+        image = Vector([image[0] / count, image[1] / count])
         var scatter: Matrix<2, 2, Scalar> = .zero
         var covariance: Matrix<2, 2, Scalar> = .zero
         sources.indices.forEach { index in
-            let source = sources[index] - sourceMean
-            let target = targets[index] - targetMean
+            let source = sources[index] - origin
+            let target = targets[index] - image
             (0..<2).forEach { row in
                 (0..<2).forEach { column in
                     scatter[row, column] += source[row] * source[column]
@@ -57,7 +57,7 @@ extension Matrix where Rows == 2, Columns == 3, Scalar: FloatingPoint {
             throw .singular
         }
         let linear = covariance.multiplied(by: inverse)
-        let moved = linear.applied(to: sourceMean)
-        self.init(linear: linear, translation: targetMean - moved)
+        let moved = linear.applied(to: origin)
+        self.init(linear: linear, translation: image - moved)
     }
 }
