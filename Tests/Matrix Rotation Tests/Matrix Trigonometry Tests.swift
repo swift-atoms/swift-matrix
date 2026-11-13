@@ -8,11 +8,11 @@
             static let angles = [0.0, 0.3, Double.pi / 2, -2.1, Double.pi]
 
             @Test(arguments: angles)
-            func `A plane turn moves x toward y`(angle: Double) {
+            func `A plane turn moves x toward y`(angle: Double) throws {
                 let turn = Matrix<2, 2, Double>.rotation(angle)
                 #expect(turn == Matrix(rows: [[Foundation.cos(angle), -Foundation.sin(angle)], [Foundation.sin(angle), Foundation.cos(angle)]]))
-                let plane = try? Rotation<2, Double>.Plane(first: .primary, second: .secondary, angle: Radian(_unchecked: angle))
-                if let plane { #expect(Matrix(Rotation(plane)) == turn) }
+                let plane = try Rotation<2, Double>.Plane(first: .primary, second: .secondary, angle: Radian(_unchecked: angle))
+                #expect(Matrix(Rotation(plane)) == turn)
             }
 
             @Test(arguments: angles)

@@ -1,24 +1,6 @@
 #if Trigonometry
     public import Trigonometry
 
-    extension Matrix where Rows == 2, Columns == 2, Scalar: Trigonometry.Circular {
-
-        @inlinable
-        public static func rotation(_ angle: Scalar) -> Self {
-            let cosine = Scalar.cos(angle)
-            let sine = Scalar.sin(angle)
-            return Self(rows: [[cosine, -sine], [sine, cosine]])
-        }
-    }
-
-    extension Matrix where Rows == 2, Columns == 3, Scalar: Trigonometry.Circular {
-
-        @inlinable
-        public static func rotation(_ angle: Scalar, about center: Vector<2, Scalar> = .zero) -> Self {
-            Self(linear: .rotation(angle), about: center)
-        }
-    }
-
     extension Matrix where Rows == 4, Columns == 4, Scalar: Trigonometry.Circular {
 
         @inlinable
