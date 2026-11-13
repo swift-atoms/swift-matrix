@@ -1,5 +1,5 @@
 #if Scale
-    @_exported public import Scale
+    public import Scale
 
     extension Matrix where Rows == Columns, Scalar: AdditiveArithmetic {
 

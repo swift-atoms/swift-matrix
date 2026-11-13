@@ -1,5 +1,7 @@
 #if Rotation && Trigonometry
     public import Matrix
+    import Rotation
+    import Trigonometry
     import Foundation
     import Testing
 

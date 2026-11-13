@@ -1,5 +1,6 @@
 #if Scale
     import Matrix
+    import Scale
     import Testing
 
     enum `Matrix Scale Tests` {}

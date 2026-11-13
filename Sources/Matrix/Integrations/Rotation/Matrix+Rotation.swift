@@ -1,6 +1,6 @@
 #if Rotation && Trigonometry
-    @_exported public import Rotation
-    @_exported public import Trigonometry
+    public import Rotation
+    public import Trigonometry
 
     extension Matrix where Rows == Columns, Scalar: BinaryFloatingPoint & Trigonometry.Circular {
 

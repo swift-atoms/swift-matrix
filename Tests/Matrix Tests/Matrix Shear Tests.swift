@@ -1,5 +1,6 @@
 #if Shear
     import Matrix
+    import Shear
     import Testing
 
     enum `Matrix Shear Tests` {}

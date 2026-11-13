@@ -73,41 +73,13 @@ let package = Package(
                     name: "Matrix Test Support"
                 ),
                 .product(name: "Projection", package: "swift-projection", condition: .when(traits: ["Projection"])),
-            ],
-            path: "Tests/Matrix Tests"
-        ),
-        .testTarget(
-            name: "Matrix Rotation Tests",
-            dependencies: [
-                .target(name: "Matrix"),
+                .product(name: "Quaternion", package: "swift-quaternion", condition: .when(traits: ["Quaternion"])),
                 .product(name: "Rotation", package: "swift-rotation", condition: .when(traits: ["Rotation"])),
                 .product(name: "Trigonometry", package: "swift-trigonometry", condition: .when(traits: ["Trigonometry", "Rotation"])),
-            ],
-            path: "Tests/Matrix Rotation Tests"
-        ),
-        .testTarget(
-            name: "Matrix Quaternion Tests",
-            dependencies: [
-                .target(name: "Matrix"),
-                .product(name: "Quaternion", package: "swift-quaternion", condition: .when(traits: ["Quaternion"])),
-            ],
-            path: "Tests/Matrix Quaternion Tests"
-        ),
-        .testTarget(
-            name: "Matrix Scale Tests",
-            dependencies: [
-                .target(name: "Matrix"),
                 .product(name: "Scale", package: "swift-scale", condition: .when(traits: ["Scale"])),
-            ],
-            path: "Tests/Matrix Scale Tests"
-        ),
-        .testTarget(
-            name: "Matrix Shear Tests",
-            dependencies: [
-                .target(name: "Matrix"),
                 .product(name: "Shear", package: "swift-shear", condition: .when(traits: ["Shear"])),
             ],
-            path: "Tests/Matrix Shear Tests"
+            path: "Tests/Matrix Tests"
         ),
     ],
     swiftLanguageModes: [.v6]

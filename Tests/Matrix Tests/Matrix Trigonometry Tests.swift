@@ -1,6 +1,8 @@
 #if Rotation && Trigonometry
     import Foundation
     import Matrix
+    import Rotation
+    import Trigonometry
     import Testing
 
     extension `Matrix Rotation Tests` {

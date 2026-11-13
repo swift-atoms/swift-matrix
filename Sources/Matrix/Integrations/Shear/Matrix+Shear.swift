@@ -1,5 +1,5 @@
 #if Shear
-    @_exported public import Shear
+    public import Shear
 
     extension Matrix where Rows == Columns, Scalar: BinaryFloatingPoint {
 
