@@ -1,5 +1,5 @@
 #if Quaternion
-    @_exported public import Quaternion
+    public import Quaternion
 
     extension Matrix where Rows == 3, Columns == 3, Scalar: FloatingPoint {
 

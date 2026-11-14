@@ -1,6 +1,7 @@
 #if Quaternion
     import Foundation
     import Matrix
+    import Quaternion
     import Testing
 
     enum `Matrix Quaternion Tests` {}
