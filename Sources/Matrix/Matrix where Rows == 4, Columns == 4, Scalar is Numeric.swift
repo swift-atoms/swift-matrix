@@ -12,6 +12,18 @@ extension Matrix where Rows == 4, Columns == 4, Scalar: Numeric {
         )
     }
 
+    /// The upper left 3 × 3: the linear part of a map of space, which moves directions.
+    @inlinable
+    public var linear: Matrix<3, 3, Scalar> {
+        Matrix<3, 3, Scalar>(rows: InlineArray { row in InlineArray { column in self[row, column] } })
+    }
+
+    /// The first three entries of the last column: where a map of space takes the origin.
+    @inlinable
+    public var translation: Vector<3, Scalar> {
+        Vector([self[0, 3], self[1, 3], self[2, 3]])
+    }
+
     @inlinable
     public static func translation(_ offset: Vector<3, Scalar>) -> Self {
         Self(linear: .identity, translation: offset)

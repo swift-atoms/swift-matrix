@@ -41,6 +41,20 @@ extension Matrix where Rows == 3, Columns == 3, Scalar: FloatingPoint {
         return result
     }
 
+    /// Whether this matrix is a rotation of space to within a tolerance: every entry of `self · transposed`
+    /// is within `tolerance` of the identity's, so the rows are orthonormal up to it, and the determinant is
+    /// positive, so it is +1 up to it and the matrix turns without reflecting. A matrix with an entry that is
+    /// not a number, or a tolerance that is negative or not a number, is not a rotation.
+    @inlinable
+    public func isRotation(within tolerance: Scalar) -> Bool {
+        let product = multiplied(by: transposed)
+        let orthonormal = (0..<9).allSatisfy { index in
+            let (row, column) = (index / 3, index % 3)
+            return abs(product[row, column] - (row == column ? 1 : 0)) <= tolerance
+        }
+        return orthonormal && determinant > 0
+    }
+
     /// A point of the plane through this matrix as a projective map: the column (x, y, 1) multiplied, and its
     /// first two entries divided by the third. For the lift of an affine map, whose last row is (0, 0, 1), it
     /// is the affine map's `applied(to:)` exactly. A point the map sends to infinity, where the third entry is
